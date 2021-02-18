@@ -25,10 +25,11 @@ def get_news():
     res = requests.get(url, headers=headers)
     res.encoding = res.apparent_encoding
     a = res.text
+    print(a)
     b = re.findall('"note":"(.*?)",', a, re.S)
     c = b[0].encode('ascii').decode('unicode_escape')
     c = i + '月' + j + '日：' + c
-    print(c)
+    print('每日一句输出: ',c)
     return c
 
 explain = on_command("每日一句", priority=5)
