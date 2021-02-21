@@ -5,7 +5,7 @@ from nonebot.adapters.cqhttp import Bot, Event
 import json
 
 
-trans = on_command("翻译", priority=5)
+trans = on_command("翻译", priority=2)
 @trans.handle()
 async def handle_first_receive(bot: Bot, event: Event, state: dict):
     args = str(event.message).strip()  # 首次发送命令时跟随的参数

@@ -7,7 +7,7 @@ from nonebot.adapters.cqhttp import Bot, Event
 
 
 
-weather = on_command("天气", priority=5)
+weather = on_command("天气", priority=2)
 @weather.handle()
 async def handle_first_receive(bot: Bot, event: Event, state: dict):
     args = str(event.message).strip()  # 首次发送命令时跟随的参数，例：/天气 上海，则args为上海

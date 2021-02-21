@@ -25,7 +25,7 @@ def get_new2():
     print('情感语录2:',str1)
     return str1
 
-exlpain = on_command("情感语录",aliases={'舔狗日记'} ,priority=5)
+exlpain = on_command("情感语录",aliases={'舔狗日记'} ,priority=2)
 @exlpain.handle()
 async def slove(bot: Bot, event: Event, state: dict):
     str1=''

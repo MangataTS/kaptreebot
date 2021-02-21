@@ -4,7 +4,7 @@ import requests
 from nonebot import on_command
 from nonebot import on_keyword
 from nonebot.rule import to_me
-from nonebot.adapters.cqhttp import Bot, Event
+from nonebot.adapters.cqhttp import Bot, Event, Message
 import random
 from aiocqhttp import MessageSegment
 
@@ -37,6 +37,9 @@ setu=['https://i.im5i.com/2021/02/11/hPbND.jpg','http://p4.qhimg.com/bdm/480_296
         'https://i.im5i.com/2021/01/21/Qf611.jpg','https://i.im5i.com/2021/01/21/QdDsd.md.jpg','https://i.im5i.com/2021/01/21/QdAg3.md.jpg','https://i.im5i.com/2021/01/21/Qde8O.md.jpg','https://i.im5i.com/2021/01/21/QdxaQ.md.jpg','https://i.im5i.com/2021/01/21/Qdm2s.jpg',
         'https://ss.im5i.com/2020/10/23/46ead76526b520ec98397b493c889642.jpg','https://i.im5i.com/2021/01/26/QxnWZ.jpg','https://i.im5i.com/2021/01/26/Qxo0J.jpg','https://i.im5i.com/2021/01/26/QxYdw.jpg','https://i.im5i.com/2021/01/26/QxIS1.jpg',
           'https://i.im5i.com/2021/01/26/QxZtn.jpg','https://i.im5i.com/2021/01/26/Qxixl.jpg','https://i.im5i.com/2021/01/26/Qxxh7.jpg','https://i.im5i.com/2021/01/28/QD3lz.jpg','https://i.im5i.com/2021/01/28/QDmG8.jpg','https://i.im5i.com/2021/01/28/QDI95.jpg','https://i.im5i.com/2021/01/30/Qajyn.jpg']
+
+music_=['http://music.163.com/song/media/outer/url?id=1817935489.mp3','http://music.163.com/song/media/outer/url?id=1816835031.mp3','http://music.163.com/song/media/outer/url?id=1813913037.mp3',
+        'http://music.163.com/song/media/outer/url?id=1813389565.mp3','http://music.163.com/song/media/outer/url?id=452986458.mp3',]
 
 def get_setu():
     url='https://api.ixiaowai.cn/api/api.php'
@@ -83,7 +86,7 @@ def get_shehui():
     print('社会语录+',str1)
     return str1
 
-explain = on_command("我要亲亲",aliases={'我要抱抱'} ,priority=5)
+explain = on_command("我要亲亲",aliases={'我要抱抱'} ,priority=2)
 @explain.handle()
 async def explainsend(bot: Bot, event: Event, state: dict):
     k = (random.randint(0,10000)+random.randint(0,10000))%len(kiss)
@@ -95,7 +98,7 @@ async def explainsend(bot: Bot, event: Event, state: dict):
         at_sender=True
     )
 
-st = on_keyword({'setu','涩图','色图','每日一图'}, priority=5)
+st = on_keyword({'setu','涩图','色图','每日一图'}, priority=2)
 @st.handle()
 async def cfopsend(bot: Bot, event: Event, state: dict):
     await bot.send(
@@ -103,7 +106,7 @@ async def cfopsend(bot: Bot, event: Event, state: dict):
         message=MessageSegment.image(get_setu()),
     )
 
-mc = on_keyword(['mc表情包','MC酱','Mc酱','mC酱',"mc酱"],priority=5)
+mc = on_keyword(['mc表情包','MC酱','Mc酱','mC酱',"mc酱"],priority=2)
 @mc.handle()
 async def mcpo(bot: Bot,event: Event,state: dict):
     await bot.send(
@@ -112,7 +115,7 @@ async def mcpo(bot: Bot,event: Event,state: dict):
         at_sender=True
     )
 
-dudu = on_keyword(['毒鸡汤'],priority=5)
+dudu = on_keyword(['毒鸡汤'],priority=2)
 @dudu.handle()
 async def getdu_(bot:Bot,event:Event,state: dict):
     str1 = str(get_dujit())
@@ -122,7 +125,7 @@ async def getdu_(bot:Bot,event:Event,state: dict):
         at_sedner=True
     )
 
-shehui = on_keyword(['社会语录'],priority=5)
+shehui = on_keyword(['社会语录'],priority=2)
 @shehui.handle()
 async def shehui_(bot:Bot,event:Event,state: dict):
     str1 = str(get_shehui())
@@ -132,7 +135,7 @@ async def shehui_(bot:Bot,event:Event,state: dict):
         at_sedner=True
     )
 
-ac = on_command("AC",priority=5)
+ac = on_command("AC",priority=2)
 @ac.handle()
 async def ACAC(bot:Bot,event: Event,state: dict):
     await bot.send(
@@ -140,7 +143,7 @@ async def ACAC(bot:Bot,event: Event,state: dict):
         message='我要AC我要AC'
     )
 
-newyear = on_command("新年快乐",priority=5)
+newyear = on_command("新年快乐",priority=2)
 @newyear.handle()
 async def resp(bot:Bot,event: Event,state: dict):
     await bot.send(
@@ -149,28 +152,31 @@ async def resp(bot:Bot,event: Event,state: dict):
         at_sender=True
     )
 
-help = on_command("查看说明",aliases={'help','帮助'},priority=5)
+help = on_command("查看说明",aliases={'help','帮助'},priority=1)
 @help.handle()
 async def resp1(bot:Bot,event: Event,state: dict):
     await bot.send(
         event=event,
-        message='1.每日一句 eg:每日一句\n'
-                '2.天气查询 eg:天气 成都\n'
-                '3.翻译 eg:翻译 cat\n'
+        message='1.每日一句 eg:/每日一句\n'
+                '2.天气查询 eg:/天气 成都\n'
+                '3.翻译 eg:/翻译 cat\n'
                 '4.戳一戳 eg:手机戳我头像\n'
-                '5.精彩图片 eg:关键词匹配("每日一图"，"mc酱")\n'
+                '5.精彩图片 eg:关键词匹配("/每日一图"，"/mc酱")\n'
                 '6.我要抱抱 eg 我要抱抱\n'
                 '7.新年快乐\n'
-                '8.情感语录 && 毒鸡汤eg:情感语录/毒鸡汤\n'
-                '9.社会语录 eg:关键词匹配(“社会语录”)\n'
-                '10. To be continue……'
+                '8.情感语录 && /毒鸡汤eg:情感语录/毒鸡汤\n'
+                '9.社会语录 eg:关键词匹配(“/社会语录”)\n'
+                '10.注意私聊的时候可以不加前缀/，群聊的时候可以@我或者/\n'
+                '11. To be continue……'
     )
 
-tt = on_command("test",priority=5)
+tt = on_command("我要听歌",priority=2)
 @tt.handle()
 async def slo_(bot:Bot,event:Event):
-    sss = MessageSegment.record(file='http://music.163.com/song/media/outer/url?id=1816835031.mp3',magic=False)
+    sst = MessageSegment.record(file='http://music.163.com/song/media/outer/url?id=1816835031.mp3')
+    sss = MessageSegment.music(type_='163',id_='1816835031')
     await bot.send(
         event=event,
-        message='https://music.163.com/#/song?id=1816835031'
+        message=Message(sst)
     )
+

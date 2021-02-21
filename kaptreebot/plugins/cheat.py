@@ -1,11 +1,12 @@
 import json
 import urllib.request
-while 1:
+from nonebot import on_message,on_command
+from nonebot.adapters.cqhttp import Bot, Event, Message, PRIVATE
+
+
+def get_n(text_input:str):
     try:
         api_url = "http://openapi.tuling123.com/openapi/api/v2"
-        text_input = input('Mangata：')
-        if text_input == 'exit':
-            break
         req = {
             "reqType": 0,  # 输入类型 0-文本, 1-图片, 2-音频
             "perception":  # 信息参数
@@ -44,6 +45,26 @@ while 1:
         intent_code = response_dic['intent']['code']
         results_text = response_dic['results'][0]['values']['text']
         print('kaptree：', results_text)
+        if str(results_text) == '请求次数超限制!':
+            return '今天的智能对话次数用完了呢QAQ'
+        return str(results_text)
         # print('code：' + str(intent_code))
     except KeyError:
-        print('出错啦~~, 下次别问这样的问题了')
+        if KeyError == '4003':
+            return '今天的智能对话次数用完了呢QAQ,请输入help查看其他玩法叭'
+        else:
+            return '这个问题好头疼呀，问点别的叭'
+
+tuling = on_message(priority=5) # permission= PRIVATE
+@tuling.handle()
+async def cheatt_(bot:Bot,event:Event):
+    if event.is_tome():
+        print("YES")
+    if event.is_tome() and event.user_id!=event.self_id:
+        mysay = event.get_message()
+        mysay = get_n(str(mysay))
+        await bot.send(
+            event=event,
+            message=mysay
+        )
+

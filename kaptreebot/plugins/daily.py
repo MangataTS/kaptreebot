@@ -32,7 +32,7 @@ def get_news():
     print('每日一句输出: ',c)
     return c
 
-explain = on_command("每日一句", priority=5)
+explain = on_command("每日一句", priority=2)
 @explain.handle()
 async def explainsend(bot: Bot, event: Event, state: dict):
     await bot.send(

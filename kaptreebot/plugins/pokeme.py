@@ -31,7 +31,7 @@ chehui = on_notice()
 async def cheh(bot:Bot,event:GroupRecallNoticeEvent):
         await bot.send(
                 event=event,
-                message='怀孕了就说啊，大家一起想办法啊~',
+                message='喜欢人家就直说啊,我还没说不同意呢~',
                 at_sender=True
               )
 
