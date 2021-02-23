@@ -35,7 +35,8 @@ def get_news():
 explain = on_command("每日一句", priority=2)
 @explain.handle()
 async def explainsend(bot: Bot, event: Event, state: dict):
-    await bot.send(
-        event=event,
-        message=get_news()
-    )
+    if event.get_user_id != event.self_id:
+        await bot.send(
+            event=event,
+            message=get_news()
+        )

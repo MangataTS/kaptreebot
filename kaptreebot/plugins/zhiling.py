@@ -1,12 +1,15 @@
 from ctypes import Union
+
+from nonebot.permission import SUPERUSER
 from requests_html import HTMLSession
 import requests
 from nonebot import on_command
-from nonebot import on_keyword
+from nonebot import on_keyword,on_message
 from nonebot.rule import to_me
 from nonebot.adapters.cqhttp import Bot, Event, Message
 import random
 from aiocqhttp import MessageSegment
+import os
 
 kiss=['么么哒','不要这样嘛!','你好讨厌哦!','你好坏哦，欺负人家，哼！','不要酱紫嘛','一天没和你聊天，就觉得哪里不对劲！','快亲亲人家啦!!','不理你了，真讨厌。','人家不要了啦!','你今天有没有想念人家呀!',
       '别这样啦，人家是个女孩子嘛!','(✿◡‿◡)','(*/ω＼*)','つ﹏⊂','ヾ(≧O≦)〃嗷~','(>▽<)，好呀','恶心心','mu--a','可以教我写代码吗','记得AK比赛哦','能AK比赛吗？']
@@ -89,72 +92,79 @@ def get_shehui():
 explain = on_command("我要亲亲",aliases={'我要抱抱'} ,priority=2)
 @explain.handle()
 async def explainsend(bot: Bot, event: Event, state: dict):
-    k = (random.randint(0,10000)+random.randint(0,10000))%len(kiss)
-    s = kiss[k]
-    print('kiss总数目',len(kiss),'我要抱抱指令输出:',s)
-    await bot.send(
-        event=event,
-        message=s,
-        at_sender=True
-    )
+    if event.get_user_id != event.self_id:
+        k = (random.randint(0,10000)+random.randint(0,10000))%len(kiss)
+        s = kiss[k]
+        print('kiss总数目',len(kiss),'我要抱抱指令输出:',s)
+        await bot.send(
+            event=event,
+            message=s,
+            at_sender=True
+        )
 
 st = on_keyword({'setu','涩图','色图','每日一图'}, priority=2)
 @st.handle()
 async def cfopsend(bot: Bot, event: Event, state: dict):
-    await bot.send(
-        event=event,
-        message=MessageSegment.image(get_setu()),
-    )
+    if event.get_user_id != event.self_id:
+        await bot.send(
+            event=event,
+            message=MessageSegment.image(get_setu()),
+        )
 
 mc = on_keyword(['mc表情包','MC酱','Mc酱','mC酱',"mc酱"],priority=2)
 @mc.handle()
 async def mcpo(bot: Bot,event: Event,state: dict):
-    await bot.send(
-        event=event,
-        message=MessageSegment.image(get_mc()),
-        at_sender=True
-    )
+    if event.get_user_id != event.self_id:
+        await bot.send(
+            event=event,
+            message=MessageSegment.image(get_mc()),
+            at_sender=True
+        )
 
 dudu = on_keyword(['毒鸡汤'],priority=2)
 @dudu.handle()
 async def getdu_(bot:Bot,event:Event,state: dict):
-    str1 = str(get_dujit())
-    await bot.send(
-        event=event,
-        message= str1,
-        at_sedner=True
-    )
+    if event.get_user_id != event.self_id:
+        str1 = str(get_dujit())
+        await bot.send(
+            event=event,
+            message= str1,
+            at_sedner=True
+        )
 
 shehui = on_keyword(['社会语录'],priority=2)
 @shehui.handle()
 async def shehui_(bot:Bot,event:Event,state: dict):
-    str1 = str(get_shehui())
-    await bot.send(
-        event=event,
-        message=str1,
-        at_sedner=True
-    )
+    if event.get_user_id != str(event.self_id):
+        str1 = str(get_shehui())
+        await bot.send(
+            event=event,
+            message=str1,
+            at_sedner=True
+        )
 
-ac = on_command("AC",priority=2)
+ac = on_keyword(['主人'],priority=2)
 @ac.handle()
 async def ACAC(bot:Bot,event: Event,state: dict):
-    await bot.send(
-        event=event,
-        message='我要AC我要AC'
-    )
+    if event.get_user_id != event.self_id:
+        await bot.send(
+            event=event,
+            message='我是大家的哦，请大家爱护我，不要对我说一些奇怪的话'
+        )
 
 newyear = on_command("新年快乐",priority=2)
 @newyear.handle()
 async def resp(bot:Bot,event: Event,state: dict):
-    await bot.send(
-        event=event,
-        message='新年快乐鸭，（づ￣3￣）づ╭❤～',
-        at_sender=True
-    )
+    if event.get_user_id != event.self_id:
+        await bot.send(
+            event=event,
+            message='新年快乐鸭，（づ￣3￣）づ╭❤～',
+            at_sender=True
+        )
 
-help = on_command("查看说明",aliases={'help','帮助'},priority=1)
+help = on_command("查看说明",aliases={'help','帮助','使用说明'},priority=2)
 @help.handle()
-async def resp1(bot:Bot,event: Event,state: dict):
+async def help_(bot:Bot,event: Event,state: dict):
     await bot.send(
         event=event,
         message='1.每日一句 eg:/每日一句\n'
@@ -169,14 +179,3 @@ async def resp1(bot:Bot,event: Event,state: dict):
                 '10.注意私聊的时候可以不加前缀/，群聊的时候可以@我或者/\n'
                 '11. To be continue……'
     )
-
-tt = on_command("我要听歌",priority=2)
-@tt.handle()
-async def slo_(bot:Bot,event:Event):
-    sst = MessageSegment.record(file='http://music.163.com/song/media/outer/url?id=1816835031.mp3')
-    sss = MessageSegment.music(type_='163',id_='1816835031')
-    await bot.send(
-        event=event,
-        message=Message(sst)
-    )
-
