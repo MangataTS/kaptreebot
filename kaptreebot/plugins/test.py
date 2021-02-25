@@ -1,11 +1,27 @@
-import os
-path_=os.getcwd()
-path_=path_+'\yuyinbao\inbed.mp3'
-mypath='file:///'+path_
-print(mypath)
-
-
-
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+import json
+import requests
+from requests_html import HTMLSession
+url ='https://v1.hitokoto.cn/?c=j&c=k'
+res = requests.get(url)
+c = json.loads(res.text)
+ans = c['hitokoto']+'---->'+c['from']
+print(ans)
+# url='https://chp.shadiao.app/api.php'
+# headers = {
+#         'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.146 Safari/537.36'
+#     }
+# t = requests.get(url,headers=headers)
+#
+# print(t.text)
+# print('朋友圈文案+',str1)
+#
+# url ='https://v1.hitokoto.cn/'
+# res = requests.get(url)
+# c = json.loads(res.text)
+# ans = c['hitokoto']+'---->'+c['from']
+# print(ans)
 
 # import json
 # import urllib.request

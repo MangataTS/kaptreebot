@@ -1,8 +1,20 @@
 import requests
 import random
-from nonebot import on_command
+from nonebot import on_command,on_keyword
 from nonebot.adapters.cqhttp import Bot, Event
 from requests_html import HTMLSession
+
+def get_qinhua():
+    url='https://api.lovelive.tools/api/SweetNothings/1/Serialization/Text?genderType=M'
+    res = requests.get(url)
+    print('情话:',res.text)
+    return str(res.text)
+
+def get_lvcha():
+    url='https://api.lovelive.tools/api/SweetNothings/1/Serialization/Text?genderType=F'
+    res = requests.get(url)
+    print('绿茶:',res.text)
+    return str(res.text)
 
 def get_news():
     url='https://api.ixiaowai.cn/tgrj/index.php'
@@ -38,4 +50,22 @@ async def slove(bot: Bot, event: Event, state: dict):
             event=event,
             message=str1,
             at_sender=True
+        )
+
+qinghua = on_keyword("情话",priority=2)
+@qinghua.handle()
+async def qinghua_(bot:Bot,event:Event):
+    if event.get_user_id != event.self_id:
+        await bot.send(
+            event=event,
+            message=get_qinhua()
+        )
+
+lvcha= on_keyword("绿茶",priority=2)
+@lvcha.handle()
+async def lvcha_(bot:Bot,event:Event):
+    if event.get_user_id != event.self_id:
+        await bot.send(
+            event=event,
+            message=get_lvcha()
         )

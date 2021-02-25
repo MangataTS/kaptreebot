@@ -3,6 +3,10 @@ from nonebot import on_command
 from nonebot.rule import to_me
 from nonebot.adapters.cqhttp import Bot, Event
 import json
+import http.client
+import hashlib
+import urllib
+import random
 
 
 trans = on_command("翻译", priority=2)
@@ -17,7 +21,7 @@ async def handle_first_receive(bot: Bot, event: Event, state: dict):
 @trans.got("trans", prompt="你想翻译什么呢...")
 async def handle_trans(bot: Bot, event: Event, state: dict):
     text = state["trans"]
-    text_trans = await get_trans(text)
+    text_trans = await get_baidufanyi(text)
     await trans.finish(text_trans)
 
 
@@ -42,3 +46,34 @@ async def get_trans(trans: str):
         return f"翻译错误：{e}"
     else:
         return f"{trans}的翻译内容：{transinfo}"
+
+async def get_baidufanyi(trans: str):
+    appid = '20210225000707766'  # 填写你的appid
+    secretKey = 'uTcrrrrtOpHHqi4sOyc6'  # 填写你的密钥
+    httpClient = None
+    myurl = '/api/trans/vip/translate'
+    fromLang = 'auto'   #原文语种
+    toLang = 'en'   #译文语种
+    salt = random.randint(32768, 65536)
+    q = trans
+    sign = appid + q + str(salt) + secretKey
+    sign = hashlib.md5(sign.encode()).hexdigest()
+    myurl = myurl + '?appid=' + appid + '&q=' + urllib.parse.quote(q) + '&from=' + fromLang + '&to=' + toLang + '&salt=' + str(
+    salt) + '&sign=' + sign
+    try:
+        httpClient = http.client.HTTPConnection('api.fanyi.baidu.com')
+        httpClient.request('GET', myurl)
+
+        # response是HTTPResponse对象
+        response = httpClient.getresponse()
+        result_all = response.read().decode("utf-8")
+        result = json.loads(result_all)
+        c='翻译结果: '+result['trans_result'][0]['dst']
+        print (c)
+        return c
+    except Exception as e:
+        print (e)
+        return '人家还翻译不了这个呢'
+    finally:
+        if httpClient:
+            httpClient.close()
