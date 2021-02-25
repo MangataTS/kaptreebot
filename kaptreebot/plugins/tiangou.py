@@ -28,13 +28,14 @@ def get_new2():
 exlpain = on_command("情感语录",aliases={'舔狗日记'} ,priority=2)
 @exlpain.handle()
 async def slove(bot: Bot, event: Event, state: dict):
-    str1=''
-    if(random.randint(0,1)):
-        str1=get_new2()
-    else:
-        str1=get_news()
-    await bot.send(
-        event=event,
-        message=str1,
-        at_sender=True
-    )
+    if event.get_user_id != event.self_id:
+        str1=''
+        if(random.randint(0,1)):
+            str1=get_new2()
+        else:
+            str1=get_news()
+        await bot.send(
+            event=event,
+            message=str1,
+            at_sender=True
+        )

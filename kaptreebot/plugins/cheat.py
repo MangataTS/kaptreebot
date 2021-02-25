@@ -3,7 +3,6 @@ import urllib.request
 from nonebot import on_message,on_command
 from nonebot.adapters.cqhttp import Bot, Event, Message, PRIVATE
 
-
 def get_n(text_input:str):
     try:
         api_url = "http://openapi.tuling123.com/openapi/api/v2"

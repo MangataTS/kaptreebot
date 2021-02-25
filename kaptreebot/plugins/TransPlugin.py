@@ -8,9 +8,10 @@ import json
 trans = on_command("翻译", priority=2)
 @trans.handle()
 async def handle_first_receive(bot: Bot, event: Event, state: dict):
-    args = str(event.message).strip()  # 首次发送命令时跟随的参数
-    if args:
-        state["trans"] = args  # 如果用户发送了参数则直接赋值
+    if event.get_user_id != event.self_id:
+        args = str(event.message).strip()  # 首次发送命令时跟随的参数
+        if args:
+            state["trans"] = args  # 如果用户发送了参数则直接赋值
 
 
 @trans.got("trans", prompt="你想翻译什么呢...")

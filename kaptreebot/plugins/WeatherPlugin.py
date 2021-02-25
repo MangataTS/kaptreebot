@@ -10,9 +10,10 @@ from nonebot.adapters.cqhttp import Bot, Event
 weather = on_command("天气", priority=2)
 @weather.handle()
 async def handle_first_receive(bot: Bot, event: Event, state: dict):
-    args = str(event.message).strip()  # 首次发送命令时跟随的参数，例：/天气 上海，则args为上海
-    if args:
-        state["city"] = args  # 如果用户发送了参数则直接赋值
+    if event.get_user_id != event.self_id:
+        args = str(event.message).strip()  # 首次发送命令时跟随的参数，例：/天气 上海，则args为上海
+        if args:
+            state["city"] = args  # 如果用户发送了参数则直接赋值
 
 
 @weather.got("city", prompt="你想查询神马城市的天气(@_@)...")

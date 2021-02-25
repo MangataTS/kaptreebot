@@ -29,6 +29,7 @@ async def _(bot:Bot,event:Event):
 chehui = on_notice()
 @chehui.handle()
 async def cheh(bot:Bot,event:GroupRecallNoticeEvent):
+    if event.get_user_id != event.self_id:
         await bot.send(
                 event=event,
                 message='喜欢人家就直说啊,我还没说不同意呢~',
@@ -41,5 +42,5 @@ async def redb(bot:Bot,event:LuckyKingNotifyEvent):
     atmsg = MessageSegment.at(event.target_id)
     await bot.send(
         event=event,
-        message = atmsg+'恭喜你最后一个领取红包',
+        message = atmsg+'恭喜你是运气王',
     )
