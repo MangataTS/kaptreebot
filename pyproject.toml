@@ -16,3 +16,8 @@ nonebot-test = "^0.1.0"
 [build-system]
 requires = ["poetry>=0.12"]
 build-backend = "poetry.masonry.api"
+
+[nonebot]
+[nonebot.plugins]
+plugins = ["nonebot_plugin_apscheduler"]
+plugin_dirs = []
