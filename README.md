@@ -7,15 +7,18 @@
 ## 关于配置
 如果你是一个纯小白，那么请先下载[python3]( https://www.python.org/)，记得勾选环境变量的选项
 如果你已经配置好python环境，那么请安装nonebot2 -> 打开你的cmd，(需要注意的是这里装的环境是实体环境，如果你要做二次开发请在你的虚拟环境，IDE的终端继续安装下面的库)
-
-然后输入`pip install nonebot2`
+然后输入`pip install nb-cli`
 
 接着输入`pip install requests`
 
 接着输入`pip install aiocqhttp`
 
 接着输入`pip install requests_html`
-后续就更具你的需求自己安装库啦
+
+接着输入`pip install nonebot.adapters.cqhttp`
+
+接着输入`pip install Pillow`
+后续就根具你的需求自己安装库啦
 
 ## 使用说明
 1.请先配置好go-cqhttp协议(只用修改我文件夹的config.hjson文件里面)，当然这个我这里配置好了的，你只需要更改QQ的UIN(账号)和password(密码)即可
@@ -41,7 +44,8 @@
 |8.情感语录 && 毒鸡汤                   |eg:情感语录/毒鸡汤/舔狗日记 (关键词匹配)
 |9.智能回复                             |eg:你随便问什么都会有回复(在群里问的时候记得@她或者/她)
 |10.语音回复                             |通过你和她对话，可能会触发设置的语音(触发条件请参考语音调用.txt)
-|11.To be continue……                    |还有一些彩蛋等你触发哦，eg:指令：绿茶，情话
+|11.ph制图                            |eg:ph 芜 湖
+|12.To be continue……                    |还有一些彩蛋等你触发哦，eg:指令：绿茶，情话
 
 ## 关于作者
 作者: Mangata
@@ -68,6 +72,11 @@ QQ:1196991321
 3.还有一些潜在的bug，我不能保证我写的代码一点问题都没有，所以如果有代码还请在issue处或者直接加入我的交流群告诉我，阿里嘎多
 
 ## 更新
+
+### 版本0.6 &nbsp;&nbsp;&nbsp;&nbsp;-2021.6.11 
+1.更新了一个ph制图的小功能
+2.新增了几个定时任务
+……
 ### 版本 0.5  &nbsp;&nbsp;&nbsp;&nbsp;-2021.2.26 
 1.首先是关于智能闲聊机器人，之前用的是图灵，但是图灵好贵，作为学生的我还支付不起，所以我把闲聊机器人换成了[小思机器人](https://console.ownthink.com/)，重写了bot的API调用(现在每天调用次数无上限了，还免费，嘿嘿)
 
