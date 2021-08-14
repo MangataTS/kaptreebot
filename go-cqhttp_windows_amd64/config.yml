@@ -4,7 +4,7 @@ account: # 账号相关
   uin: 2188248907 # QQ账号
   password: 'eee123456e' # 密码为空时使用扫码登录
   encrypt: false  # 是否开启密码加密
-  status: 0     # 在线状态 请参考 https://docs.go-cqhttp.org/guide/config.html#在线状态
+  status: 0      # 在线状态 请参考 https://docs.go-cqhttp.org/guide/config.html#在线状态
   relogin: # 重连设置
     delay: 3   # 首次重连延迟, 单位秒
     interval: 3   # 重连间隔
@@ -39,12 +39,18 @@ message:
   remove-reply-at: false
   # 为Reply附加更多信息
   extra-reply-data: false
+  # 跳过 Mime 扫描, 忽略错误数据
+  skip-mime-scan: false
 
 output:
   # 日志等级 trace,debug,info,warn,error
   log-level: warn
+  # 日志时效 单位天. 超过这个时间之前的日志将会被自动删除. 设置为 0 表示永久保留.
+  log-aging: 15
+  # 是否在每次启动时强制创建全新的文件储存日志. 为 false 的情况下将会在上次启动时创建的日志文件续写
+  log-force-new: true
   # 是否启用 DEBUG
-  debug: true# 开启调试模式
+  debug: false # 开启调试模式
 
 # 默认中间件锚点
 default-middlewares: &default
@@ -82,9 +88,9 @@ servers:
       # 注意 设置了此项地址后下面两项将会被忽略
       universal: ws://127.0.0.1:8765/cqhttp/ws
       # 反向WS API 地址
-      #api: ws://your_websocket_api.server
+      api: ws://your_websocket_api.server
       # 反向WS Event 地址
-     # event: ws://your_websocket_event.server
+      event: ws://your_websocket_event.server
       # 重连间隔 单位毫秒
       reconnect-interval: 3000
       middlewares:
