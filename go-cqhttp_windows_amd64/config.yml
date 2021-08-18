@@ -2,7 +2,7 @@
 
 account: # 账号相关
   uin: 2188248907 # QQ账号
-  password: 'eee123456e' # 密码为空时使用扫码登录
+  password: '' # 密码为空时使用扫码登录
   encrypt: false  # 是否开启密码加密
   status: 0      # 在线状态 请参考 https://docs.go-cqhttp.org/guide/config.html#在线状态
   relogin: # 重连设置

@@ -31,6 +31,14 @@
 
 3.在我的kaptreebot目录下面有两个文件.env.dev和.env.prod，请在里面修改成你的QQ号
 
+
+
+# 从0开始学习视频连接:
+
+[https://www.bilibili.com/video/BV1DP4y1W7ji](https://www.bilibili.com/video/BV1DP4y1W7ji)
+
+![image-20210818144520047](E:\git_Mangata\kaptreebot\kaptreebot\image-20210818144520047.png)
+
 ## 目前实现功能
 |功能                   |使用方法
 --|--
