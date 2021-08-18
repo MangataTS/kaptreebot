@@ -15,7 +15,7 @@
 
 接着输入`pip install requests_html`
 
-接着输入`pip install nonebot.adapters.cqhttp`
+接着输入`pip install nonebot.adapter.cqhttp`
 
 接着输入`pip install Pillow`
 后续就根具你的需求自己安装库啦
