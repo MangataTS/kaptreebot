@@ -37,7 +37,7 @@
 
 [https://www.bilibili.com/video/BV1DP4y1W7ji](https://www.bilibili.com/video/BV1DP4y1W7ji)
 
-![image-20210818144520047](E:\git_Mangata\kaptreebot\kaptreebot\image-20210818144520047.png)
+![image-20210818144520047](image-20210818144520047.png)
 
 ## 目前实现功能
 |功能                   |使用方法
