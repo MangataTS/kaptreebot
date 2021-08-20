@@ -33,13 +33,14 @@ def get_today():
     url='https://api.iyk0.com/jr/'
     r = requests.get(url)
     result = json.loads(r.content)
-    message = str(result['today']+'\n'+result['surplus'])
+    message = str(result['surplus'])
     return message
 
 @scheduler.scheduled_job('cron', hour='8',minute='00', id='zaobao')
 async def zaobao():
-    (bot) = nonebot.get_bots().values()
+    (bot,) = nonebot.get_bots().values()
     text = get_zaobao()
+    text.replace('\n', '')
     for id in group_id_list:
         await bot.send_msg(
             message_type="group",
