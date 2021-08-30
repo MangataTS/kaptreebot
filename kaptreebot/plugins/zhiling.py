@@ -1,3 +1,4 @@
+import os
 from ctypes import Union
 
 from nonebot.permission import SUPERUSER
@@ -19,7 +20,7 @@ music_=['http://music.163.com/song/media/outer/url?id=1817935489.mp3','http://mu
 
 # 获取图片
 def get_setu():
-    url='https://api.ixiaowai.cn/api/api.php'
+    url='https://api.iyk0.com/luoli'
     headers = {
         'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.146 Safari/537.36'
     }
@@ -205,15 +206,17 @@ help = on_command("查看说明",aliases={'help','帮助','使用说明'},priori
 @help.handle()
 async def help_(bot:Bot,event: Event,state: dict):
     if event.get_user_id != event.self_id:
+        path_ = os.getcwd()
+        path_ = path_ + '\help.png'
+        mypath = 'file:///' + path_
+        print(mypath)
         await bot.send(
             event=event,
-            message='1.每日一句 eg:/每日一句\n\n'
-                    '2.天气查询 eg:/天气 成都\n\n'
-                    '3.翻译 eg:/翻译 cat\n\n'
-                    '4.戳一戳 eg:手机戳我头像\n\n'
-                    '5.精彩图片 eg:关键词匹配("/每日一图"，/mc酱，/R18")\n\n'
-                    '6.我要抱抱 eg 我要抱抱\n\n'
-                    '7.朋友圈文案/彩虹屁/开始网抑/毒鸡汤 eg:(“/开始网抑，/彩虹屁，/朋友圈文案，/毒鸡汤”)\n\n'
-                    '8.注意私聊的时候可以不加前缀/，群聊的时候可以@我或者/\n\n'
-                    '9.更多功能请亲自体验触发……'
+            message=MessageSegment.image(mypath)
         )
+zhibo= on_command('$直播',priority=2)
+@zhibo.handle()
+async def zhibo_(bot:Bot,event:Event,state: dict):
+    if event.user_id != event.self_id:
+        str1 = '主人，您订阅的直播间开播辣，快来看看叭\n地址:https://live.bilibili.com/22864638'
+        await bot.send(event=event,group_id = 913088980,message=str1)
