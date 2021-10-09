@@ -1,13 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import json
-import requests
-from requests_html import HTMLSession
-url ='https://v1.hitokoto.cn/?c=j&c=k'
-res = requests.get(url)
-c = json.loads(res.text)
-ans = c['hitokoto']+'---->'+c['from']
-print(ans)
+# import json
+# import requests
+# from requests_html import HTMLSession
+# url = 'https://api.iyk0.com/60s'
+# r = requests.get(url)
+# result = json.loads(r.content)
+# message = result['imageUrl']
+# print(message)
 
 # si_zhi_url = 'https://api.ownthink.com/bot'
 # appid = 'c8278e2921b4bc31f8974ad58dec13ba'
@@ -54,8 +54,27 @@ print(ans)
 #     print(message)
 # get_yuying("好家伙")
 
-url = 'https://api.iyk0.com/60s'
-r = requests.get(url)
-result = json.loads(r.content)
-message = result['imageUrl']
-print(message)
+# url = 'https://api.iyk0.com/60s'
+# r = requests.get(url)
+# result = json.loads(r.content)
+# message = result['imageUrl']
+# print(message)
+
+
+# from typing import Dict, List
+# import psutil
+# def cpu_status() -> float:
+#     return psutil.cpu_percent(interval=1)  # type: ignore
+#
+#
+# def per_cpu_status() -> List[float]:
+#     return psutil.cpu_percent(interval=1, percpu=True)  # type: ignore
+#
+#
+# def memory_status() -> float:
+#     return psutil.virtual_memory().percent
+#
+#
+#
+# print(cpu_status())
+# print(memory_status())

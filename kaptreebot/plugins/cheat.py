@@ -59,7 +59,7 @@ from nonebot.adapters.cqhttp import Bot, Event, Message, PRIVATE
 si_zhi_url = 'https://api.ownthink.com/bot'
 appid = 'c8278e2921b4bc31f8974ad58dec13ba'
 
-def get_n(text):
+async def get_n(text):
     try:
         data = {
             "spoken": text,
@@ -83,9 +83,9 @@ tuling = on_message(priority=5) # permission= PRIVATE
 async def cheatt_(bot:Bot,event:Event):
     if event.is_tome():
         print("YES")
-    if event.is_tome() and event.user_id!=event.self_id:
+    if event.is_tome() and int(event.get_user_id())!=event.self_id:
         mysay = event.get_message()
-        mysay = get_n(str(mysay))
+        mysay = await get_n(str(mysay))
         await bot.send(
             event=event,
             message=mysay

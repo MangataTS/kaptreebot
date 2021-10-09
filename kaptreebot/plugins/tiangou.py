@@ -40,7 +40,7 @@ def get_new2():
 exlpain = on_command("情感语录",aliases={'舔狗日记'} ,priority=2)
 @exlpain.handle()
 async def slove(bot: Bot, event: Event, state: dict):
-    if event.get_user_id != event.self_id:
+    if int(event.get_user_id())!= event.self_id:
         str1=''
         if(random.randint(0,1)):
             str1=get_new2()

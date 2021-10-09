@@ -12,7 +12,7 @@ import random
 trans = on_command("翻译", priority=2)
 @trans.handle()
 async def handle_first_receive(bot: Bot, event: Event, state: dict):
-    if event.get_user_id != event.self_id:
+    if int(event.get_user_id())!= event.self_id:
         args = str(event.message).strip()  # 首次发送命令时跟随的参数
         if args:
             state["trans"] = args  # 如果用户发送了参数则直接赋值
@@ -21,7 +21,7 @@ async def handle_first_receive(bot: Bot, event: Event, state: dict):
 @trans.got("trans", prompt="你想翻译什么呢...")
 async def handle_trans(bot: Bot, event: Event, state: dict):
     text = state["trans"]
-    text_trans = await get_baidufanyi(text)
+    text_trans =  get_baidufanyi(text)
     await trans.finish(text_trans)
 
 
@@ -47,7 +47,7 @@ async def get_trans(trans: str):
     else:
         return f"{trans}的翻译内容：{transinfo}"
 
-async def get_baidufanyi(trans: str):
+def get_baidufanyi(trans: str):
     appid = '20210225000707766'  # 填写你的appid
     secretKey = 'uTcrrrrtOpHHqi4sOyc6'  # 填写你的密钥
     httpClient = None
@@ -63,7 +63,6 @@ async def get_baidufanyi(trans: str):
     try:
         httpClient = http.client.HTTPConnection('api.fanyi.baidu.com')
         httpClient.request('GET', myurl)
-
         # response是HTTPResponse对象
         response = httpClient.getresponse()
         result_all = response.read().decode("utf-8")
