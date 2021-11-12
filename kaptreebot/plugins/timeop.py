@@ -39,7 +39,7 @@ def get_today():
 @scheduler.scheduled_job('cron', hour='12',minute='35', id='zaobao')
 async def zaobao():
     (bot,) = nonebot.get_bots().values()
-    text = get_zaobao()
+    text = await get_zaobao()
     text.replace('\n', '')
     for id in group_id_list:
         await bot.send_msg(

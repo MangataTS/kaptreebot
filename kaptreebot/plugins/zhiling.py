@@ -19,8 +19,8 @@ music_=['http://music.163.com/song/media/outer/url?id=1817935489.mp3','http://mu
         'http://music.163.com/song/media/outer/url?id=1813389565.mp3','http://music.163.com/song/media/outer/url?id=452986458.mp3',]
 
 # 获取图片
-async def get_setu():
-    url='https://api.iyk0.com/luoli'
+def get_setu():
+    url='https://api.iyk0.com/ecy/api.php'
     headers = {
         'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.146 Safari/537.36'
     }
@@ -41,7 +41,7 @@ def get_mc():
 
 
 # 有一定概率刷出R18的图
-async def get_R18():
+def get_R18():
     url='https://api.iyk0.com/xjj'
     headers = {
         'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.146 Safari/537.36'
@@ -131,7 +131,7 @@ async def st_(bot: Bot, event: Event, state: dict):
     if int(event.get_user_id()) != event.self_id:
         await bot.send(
             event=event,
-            message=MessageSegment.image(await get_setu())
+            message=MessageSegment.image(get_setu())
         )
 
 
@@ -142,7 +142,7 @@ async def R18_(bot: Bot, event: Event, state: dict):
     if int(event.get_user_id()) != event.self_id:
         await bot.send(
             event=event,
-            message=MessageSegment.image(await get_R18()),
+            message=MessageSegment.image(get_R18()),
         )
 
 
