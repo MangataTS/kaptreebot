@@ -7,7 +7,7 @@ import requests
 from nonebot import on_command
 from nonebot import on_keyword,on_message
 from nonebot.rule import to_me
-from nonebot.adapters.cqhttp import Bot, Event, Message
+from nonebot.adapters.cqhttp import Bot, Event, Message, unescape
 import random
 from aiocqhttp import MessageSegment
 import json
@@ -20,7 +20,7 @@ music_=['http://music.163.com/song/media/outer/url?id=1817935489.mp3','http://mu
 
 # 获取图片
 def get_setu():
-    url='https://api.iyk0.com/luoli'
+    url='https://api.iyk0.com/ecy/api.php'
     headers = {
         'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.146 Safari/537.36'
     }
@@ -42,11 +42,22 @@ def get_mc():
 
 # 有一定概率刷出R18的图
 def get_R18():
-    url='https://api.yimian.xyz/img/?type=koino&R18=true'
+    url='https://api.iyk0.com/xjj'
     headers = {
         'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.146 Safari/537.36'
     }
     res = requests.get(url,headers=headers)
+    c = res.url
+    return c
+
+# https://api.yimian.xyz/img?type=moe&size=1920x1080
+def get_meitu():
+    url='https://api.yimian.xyz/img?type=moe&size=1920x1080'
+    proxies = {"http": None, "https": None}
+    headers = {
+        'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.146 Safari/537.36'
+    }
+    res = requests.get(url,headers=headers,proxies=proxies,timeout=5)
     c = res.url
     return c
 
@@ -103,7 +114,7 @@ def get_wangyi():
 explain = on_command("我要亲亲",aliases={'我要抱抱'} ,priority=2)
 @explain.handle()
 async def explainsend(bot: Bot, event: Event, state: dict):
-    if event.get_user_id != event.self_id:
+    if int(event.get_user_id()) != event.self_id:
         k = (random.randint(0,10000)+random.randint(0,10000))%len(kiss)
         s = kiss[k]
         print('kiss总数目',len(kiss),'我要抱抱指令输出:',s)
@@ -117,27 +128,28 @@ async def explainsend(bot: Bot, event: Event, state: dict):
 st = on_keyword({'setu','涩图','色图','每日一图'}, priority=2)
 @st.handle()
 async def st_(bot: Bot, event: Event, state: dict):
-    if event.get_user_id != event.self_id:
+    if int(event.get_user_id()) != event.self_id:
         await bot.send(
             event=event,
-            message=MessageSegment.image(get_setu()),
+            message=MessageSegment.image(get_setu())
         )
+
 
 
 R18 = on_keyword({'R18','r18'}, priority=2)
 @R18.handle()
 async def R18_(bot: Bot, event: Event, state: dict):
-    if event.get_user_id != event.self_id:
+    if int(event.get_user_id()) != event.self_id:
         await bot.send(
             event=event,
-            message=MessageSegment.image(get_setu()),
+            message=MessageSegment.image(get_R18()),
         )
 
 
 mc = on_keyword(['mc表情包','MC酱','Mc酱','mC酱',"mc酱"],priority=2)
 @mc.handle()
 async def mcpo(bot: Bot,event: Event,state: dict):
-    if event.get_user_id != event.self_id:
+    if int(event.get_user_id()) != event.self_id:
         await bot.send(
             event=event,
             message=MessageSegment.image(get_mc()),
@@ -148,7 +160,7 @@ async def mcpo(bot: Bot,event: Event,state: dict):
 dudu = on_keyword(['毒鸡汤'],priority=2)
 @dudu.handle()
 async def getdu_(bot:Bot,event:Event,state: dict):
-    if event.get_user_id != event.self_id:
+    if int(event.get_user_id()) != event.self_id:
         str1 = str(get_dujit())
         await bot.send(
             event=event,
@@ -160,7 +172,7 @@ async def getdu_(bot:Bot,event:Event,state: dict):
 wangyi = on_command('开始网抑',priority=2)
 @wangyi.handle()
 async def wangyi_(bot:Bot,event:Event,state: dict):
-    if event.get_user_id != event.self_id:
+    if int(event.get_user_id()) != event.self_id:
         str1 = str(get_wangyi())
         await bot.send(
             event=event,
@@ -172,7 +184,6 @@ async def wangyi_(bot:Bot,event:Event,state: dict):
 caihong = on_command('彩虹屁',priority=2)
 @caihong.handle()
 async def caihong_(bot:Bot,event:Event,state: dict):
-
         str1 = str(get_caihongpi())
         await bot.send(
             event=event,
@@ -184,7 +195,7 @@ async def caihong_(bot:Bot,event:Event,state: dict):
 pyqwenan= on_command('朋友圈文案',priority=2)
 @pyqwenan.handle()
 async def pyqwenan_(bot:Bot,event:Event,state: dict):
-    if event.get_user_id != event.self_id:
+    if int(event.get_user_id()) != event.self_id:
         str1 = str(get_wenan())
         await bot.send(
             event=event,
@@ -193,10 +204,10 @@ async def pyqwenan_(bot:Bot,event:Event,state: dict):
         )
 
 
-master = on_keyword(['主人'],['你是谁的?'],priority=2)
+master = on_keyword(['主人','你是谁的?'],priority=2)
 @master.handle()
 async def master_(bot:Bot,event: Event,state: dict):
-    if event.get_user_id != event.self_id:
+    if int(event.get_user_id()) != event.self_id:
         await bot.send(
             event=event,
             message='我是大家的哦，请大家爱护我，不要对我说一些奇怪的话'
@@ -205,7 +216,7 @@ async def master_(bot:Bot,event: Event,state: dict):
 help = on_command("查看说明",aliases={'help','帮助','使用说明'},priority=2)
 @help.handle()
 async def help_(bot:Bot,event: Event,state: dict):
-    if event.get_user_id != event.self_id:
+    if int(event.get_user_id()) != event.self_id:
         path_ = os.getcwd()
         path_ = path_ + '\help.png'
         mypath = 'file:///' + path_
@@ -217,6 +228,21 @@ async def help_(bot:Bot,event: Event,state: dict):
 zhibo= on_command('$直播',priority=2)
 @zhibo.handle()
 async def zhibo_(bot:Bot,event:Event,state: dict):
-    if event.user_id != event.self_id:
+    print(event.get_user_id())
+    print(event.self_id)
+    if int(event.get_user_id()) != event.self_id:
         str1 = '主人，您订阅的直播间开播辣，快来看看叭\n地址:https://live.bilibili.com/22864638'
         await bot.send(event=event,group_id = 913088980,message=str1)
+
+# test = on_command('test',priority=2)
+# @test.handle()
+# async def test_(bot:Bot,event:Event,state: dict):
+#     url = 'https://api.iyk0.com/60s'
+#     r = requests.get(url)
+#     result = json.loads(r.content)
+#     message = result['imageUrl']
+#     print(message)
+#     await bot.send(
+#         event=event,
+#         message=MessageSegment.image(message)
+#     )
