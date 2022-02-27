@@ -3,13 +3,17 @@ import requests
 from nonebot import on_command
 from nonebot import on_keyword,on_message
 from nonebot.rule import to_me
-from nonebot.adapters.cqhttp import Bot, Event, Message
+from nonebot.adapters.onebot.v11 import Bot, Event, Message
 import random
-from aiocqhttp import MessageSegment
+from nonebot.adapters.onebot.v11 import MessageSegment
 import json
-from nonebot.adapters.cqhttp import message
+from nonebot.typing import T_State
 
-async def get_biao(text:str):
+from nonebot.matcher import Matcher
+from nonebot.adapters import Message
+from nonebot.params import Arg, CommandArg, ArgPlainText
+
+def get_biao(text:str):
     url = ('https://api.iyk0.com/sbqb/?msg='+text)
     r = requests.get(url)
     result = json.loads(r.content)
@@ -19,25 +23,23 @@ async def get_biao(text:str):
     print(message)
     return message
 
-BQB = on_command("表情包", priority=2)
+BQB = on_command("表情包", rule=to_me(),priority=2,block=True)
+
 @BQB.handle()
-async def BQB_(bot: Bot, event: Event, state: dict):
-    if int(event.get_user_id()) != event.self_id:
-        args = str(event.message).strip()  # 首次发送命令时跟随的参数，例：/天气 上海，则args为上海
-        if args:
-            state["biao"] = args  # 如果用户发送了参数则直接赋值
+async def BQB_(matcher: Matcher, args: Message = CommandArg()):
+        plain_text = args.extract_plain_text()  # 首次发送命令时跟随的参数，例：/天气 上海，则args为上海
+        if plain_text:
+            matcher.set_arg("biao", args)  # 如果用户发送了参数则直接赋值
+
 
 
 @BQB.got("biao", prompt="你想查询神马表情包(@_@)...")
-async def handle_biao(bot: Bot, event: Event, state: dict):
-    biao = state["biao"]
-    biaoqingbao = await get_biao(biao)
-    await bot.send(
-        event = event,
-        message=MessageSegment.image(biaoqingbao)
-    )
+async def handle_biao(biao: Message = Arg(), biao_name: str = ArgPlainText("biao")):
+    print(biao_name)
+    biaoqingbao = get_biao(biao_name)
+    await BQB.send(MessageSegment.image(biaoqingbao))
 
-async def get_wangzhe(text:str):
+def get_wangzhe(text:str):
     url = ('https://api.iyk0.com/wzcz/?msg='+text)
     r = requests.get(url)
     result = json.loads(r.content)
@@ -46,80 +48,71 @@ async def get_wangzhe(text:str):
     return message
 
 # 王者荣耀出装
-WZRY = on_command("王者荣耀", priority=2)
+WZRY = on_command("王者荣耀", priority=2,block=True)
 @WZRY.handle()
-async def WZ_(bot: Bot, event: Event, state: dict):
-    if int(event.get_user_id()) != event.self_id:
-        args = str(event.message).strip()  # 首次发送命令时跟随的参数，例：/天气 上海，则args为上海
-        if args:
-            state["king"] = args  # 如果用户发送了参数则直接赋值
+async def WZ_(matcher: Matcher, args: Message = CommandArg()):
+    plain_text = args.extract_plain_text()  # 首次发送命令时跟随的参数，例：/天气 上海，则args为上海
+    if plain_text:
+        matcher.set_arg("king", args)  # 如果用户发送了参数则直接赋值
 
 
 @WZRY.got("king", prompt="你想查询什么英雄(@_@)...")
-async def handle_WZ(bot: Bot, event: Event, state: dict):
-    king = state["king"]
-    wangzhe = await get_wangzhe(king)
-    await bot.send(
-        event = event,
-        message=MessageSegment.image(wangzhe)
-    )
+async def handle_WZ(king: Message = Arg(), king_name: str = ArgPlainText("king")):
+    wangzhe = get_wangzhe(king_name)
+    await WZRY.send(MessageSegment.image(wangzhe))
 
-async def get_DSP():
+def get_DSP():
     url = 'https://api.iyk0.com/dsp/?type=网红'
     r = requests.get(url)
     result = json.loads(r.content)
     message = result['url']
-    print(message)
     return message
 
-# 短视频
-DSP = on_command("短视频", priority=2)
-@DSP.handle()
-async def WZ_(bot: Bot, event: Event, state: dict):
-    if int(event.get_user_id()) != event.self_id:
-        await bot.send(
-            event=event,
-            message=MessageSegment(type_='video',
-               data=({
-                   'file': str(await get_DSP())
-               }))
-        )
+# # 短视频
+# DSP = on_command("短视频", priority=2,block=True)
+# @DSP.handle()
+# async def DSP_(bot: Bot, event: Event):
+#     if int(event.get_user_id()) != event.self_id:
+#         url=get_DSP()
+#         print(url)
+#         await DSP.send(MessageSegment.video(url))
+#         #(type_='video',data=({'file': str(get_DSP())})
 
 # 抽签小游戏
 
-async def get_chou(qq:str):
+def get_chou(qq:str):
     url = 'https://api.iyk0.com/gdlq/?msg=抽签&n='+qq
     r = requests.get(url)
     message = r.text
     print(message)
     return message
 
-CouQ = on_command("抽签", priority=2)
+CouQ = on_command("抽签", priority=2,block=True)
 @CouQ.handle()
-async def chouqian_(bot: Bot, event: Event, state: dict):
+async def chouqian_(bot: Bot, event: Event):
     if int(event.get_user_id()) != event.self_id:
         await bot.send(
             event=event,
-            message=str(await get_chou(str(Event.get_user_id))),
+            message=str(get_chou(str(Event.get_user_id))),
             at_sedner=True
         )
-async def get_pao(qq:str):
+def get_pao(qq:str):
     url = 'https://api.iyk0.com/gdlq/?msg=抛杯&n='+qq
     r = requests.get(url)
     message = r.text
     print(message)
     return message
 
-PB = on_command("抛杯", priority=2)
+PB = on_command("抛杯", priority=2,block=True)
 @PB.handle()
-async def paobei_(bot: Bot, event: Event, state: dict):
+async def paobei_(bot: Bot, event: Event):
     if int(event.get_user_id()) != event.self_id:
         await bot.send(
             event=event,
-            message=str(await get_pao(str(Event.get_user_id))),
+            message=str(get_pao(str(Event.get_user_id))),
             at_sedner=True
         )
-async def get_jie(qq:str):
+def get_jie(qq:str):
     url = 'https://api.iyk0.com/gdlq/?msg=解签&n='+qq
     r = requests.get(url)
     result = json.loads(r.content)
@@ -127,17 +120,17 @@ async def get_jie(qq:str):
     print(message)
     return message
 
-PB = on_command("解签", priority=2)
-@PB.handle()
-async def paobei_(bot: Bot, event: Event, state: dict):
+JQ = on_command("解签", priority=2,block=True)
+@JQ.handle()
+async def JQ_(bot: Bot, event: Event):
     if int(event.get_user_id()) != event.self_id:
         await bot.send(
             event=event,
-            message=str(await get_jie(str(Event.get_user_id))),
+            message=str(get_jie(str(Event.get_user_id))),
             at_sedner=True
         )
 # 语音转换
-async def get_yuying(text:str):
+def get_yuying(text:str):
     url = ('https://api.iyk0.com/yy/?msg='+text)
     r = requests.get(url)
     message = r.text
@@ -145,21 +138,17 @@ async def get_yuying(text:str):
     return message
 
 
-YYZH = on_command("语音转换", priority=2)
+YYZH = on_command("语音转换", priority=2,block=True)
 @YYZH.handle()
-async def YY_(bot: Bot, event: Event, state: dict):
-    if int(event.get_user_id()) != event.self_id:
-        args = str(event.message).strip()  # 首次发送命令时跟随的参数，例：/天气 上海，则args为上海
-        if args:
-            state["yuying"] = args  # 如果用户发送了参数则直接赋值
+async def YY_(matcher: Matcher, args: Message = CommandArg()):
+    plain_text = args.extract_plain_text()  # 首次发送命令时跟随的参数，例：/天气 上海，则args为上海
+    if plain_text:
+        matcher.set_arg("yuying", args)  # 如果用户发送了参数则直接赋值
 
 
 @YYZH.got("yuying", prompt="你想转换什么")
-async def handle_YY(bot: Bot, event: Event, state: dict):
-    yuying = state["yuying"]
-    huan = str(get_yuying(yuying))
+async def handle_YY(yuying: Message = Arg(), yuying_name: str = ArgPlainText("yuying")):
+    huan = str(get_yuying(yuying_name))
     huan = huan.replace('\n', '')
-    await bot.send(
-        event=event,
-        message=MessageSegment(type_='record',data=({'file': huan}))
-    )
+    print("转换内容: ",huan)
+    await YYZH.send(MessageSegment.record(huan))

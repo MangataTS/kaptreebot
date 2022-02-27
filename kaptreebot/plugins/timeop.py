@@ -1,56 +1,66 @@
 import json
-import random
-import os
 import nonebot
 import requests
-import base64
-import io
-from aiocqhttp import MessageSegment
+from nonebot.adapters.onebot.v11 import MessageSegment
 from nonebot import require
-from nonebot.adapters.cqhttp import Bot, Event, Message
+import random
 
-group_id_list=[719126877,297823886,913088980,541802647,805481638,786724450,887568508,790106567,1055277728]
+from nonebot.exception import ParserExit
+
+# 群发的白名单
+group_id_list=[913088980,719126877,1055277728,940568724,867600902]
 
 scheduler = require('nonebot_plugin_apscheduler').scheduler
+# 获取随机题目
+def get_problem():
+    url="http://acm.mangata.ltd/api/?"
+    headers = {
+            'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.146 Safari/537.36'
+        }
+    id=str(random.randint(1,1786))
+    query="query{problem(id:" + id + "){pid,title,nSubmit,nAccept,difficulty,tag}}"
+    url = url + query
+    print(url)
+    val=requests.get(url,headers=headers)
 
-@scheduler.scheduled_job('cron', hour='15',minute='0', id='yincha')
-async def yincha():
+    res=json.loads(val.content)
+    print(res)
+    it=res["data"]["problem"]
+    if it == None:
+        return str("题目出错请联系Mangata！")
+    else:
+        link="http://acm.mangata.ltd/p/" + it['pid']
+        tag = ""
+        l = len(it['tag'])
+        j = 1
+        for i in it['tag']:
+            if j < l:
+                tag = tag + i + "、"
+            else:
+                tag = tag + i
+            j=j+1
+        ans = "题目名称： " + it['title']
+        ans = ans + "\n题目连接： " + link
+        ans = ans + "\n算法标签： " + tag
+        ans = ans + "\n总提交数： " + str(it['nSubmit'])
+        ans = ans + "\n总通过数： " + str(it['nAccept'])
+        ans = ans + "\n预估难度： " + str(it['difficulty'])
+        ans = ans + "\n骚年快来挑战吧！别忘了写题解噢！"
+        return ans
+
+@scheduler.scheduled_job('cron', hour='15',minute='41', id='problem')
+async def problem():
     (bot,) = nonebot.get_bots().values()
+    text = "\n快冲！今天的每日一题：\n"
+    text = text + get_problem()
+    url = 'http://acm.mangata.ltd/file/2/learn.jpg'
+
     for id in group_id_list:
-        await bot.send_msg(
-            message_type="group",
-            group_id=int(id),
-            message='三点几嚟，做碌鸠啊做！做这么多，老板不会心疼你的,饮茶先啦！'
-        )
-
-async def get_zaobao():
-    url = 'https://api.iyk0.com/60s'
-    r = requests.get(url)
-    result = json.loads(r.content)
-    message = result['imageUrl']
-    return message
-def get_today():
-    url='https://api.iyk0.com/jr/'
-    r = requests.get(url)
-    result = json.loads(r.content)
-    message = str(result['surplus'])
-    return message
-
-@scheduler.scheduled_job('cron', hour='12',minute='35', id='zaobao')
-async def zaobao():
-    (bot,) = nonebot.get_bots().values()
-    text = await get_zaobao()
-    text.replace('\n', '')
-    for id in group_id_list:
-        await bot.send_msg(
-            message_type="group",
-            group_id=int(id),
-            message='早上好，兄弟萌☀\n━━━━━━━━\n60s读懂世界\n'+MessageSegment.image(text)
-        )
-        await bot.send_msg(
-            message_type="group",
-            group_id=int(id),
-            message=str(get_today())
-        )
-
-
+        try:
+            await bot.send_msg(
+                message_type="group",
+                group_id=int(id),
+                message=MessageSegment.image(url) + text
+            )
+        except Exception as e:
+            print(e)
