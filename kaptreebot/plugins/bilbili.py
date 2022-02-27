@@ -54,7 +54,7 @@ async def bilibili_live():
         if get_state() == '直播':
             ans = get_message()
             path_ = os.getcwd()
-            path = 'file:///' + path_ + '\kaptreebot\plugins\living.png'
+            path = 'file:///' + path_ + 'living.png'
             print(path)
             for id in group_id_list:
                 try:
