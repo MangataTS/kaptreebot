@@ -1,13 +1,10 @@
-from requests_html import HTMLSession
 import requests
 from nonebot import on_command
-from nonebot import on_keyword,on_message
 from nonebot.rule import to_me
-from nonebot.adapters.onebot.v11 import Bot, Event, Message
+from nonebot.adapters.onebot.v11 import Bot, Event
 import random
 from nonebot.adapters.onebot.v11 import MessageSegment
 import json
-from nonebot.typing import T_State
 
 from nonebot.matcher import Matcher
 from nonebot.adapters import Message

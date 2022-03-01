@@ -1,6 +1,6 @@
 import requests
 import random
-from nonebot import on_command,on_keyword
+from nonebot import on_command
 from nonebot.adapters.onebot.v11 import Bot, Event
 from requests_html import HTMLSession
 

@@ -24,7 +24,7 @@ async def handle_first_receive(matcher: Matcher, args: Message = CommandArg()):
 async def handle_trans(Trans: Message = Arg(), text: str = ArgPlainText("Trans")):
     try:
         text_trans =  get_baidufanyi(text)
-        await trans.finish(text_trans)
+        await trans.send(text_trans)
     except Exception as e:
         await trans.send("翻译插件出现故障，请联系Mangata")
 

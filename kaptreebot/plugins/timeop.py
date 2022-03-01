@@ -5,7 +5,6 @@ from nonebot.adapters.onebot.v11 import MessageSegment
 from nonebot import require
 import random
 
-from nonebot.exception import ParserExit
 
 # 群发的白名单
 group_id_list=[913088980,719126877,1055277728,940568724,867600902]

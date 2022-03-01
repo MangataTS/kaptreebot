@@ -3,8 +3,6 @@ import gzip
 import json
 from nonebot import on_command
 from nonebot.rule import to_me
-from nonebot.adapters.onebot.v11 import Bot, Event
-from nonebot.typing import T_State
 
 from nonebot.matcher import Matcher
 from nonebot.adapters import Message
@@ -25,7 +23,7 @@ async def handle_first_receive(matcher: Matcher, args: Message = CommandArg()):
 async def handle_city(city: Message = Arg(), city_name: str = ArgPlainText("city")):
     try:
         city_weather = await get_weather(city_name)
-        await weather.finish(city_weather)
+        await weather.send(city_weather)
     except Exception as e:
         await weather.send("天气查询插件出现故障，请联系Mangata")
 

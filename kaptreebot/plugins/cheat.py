@@ -1,7 +1,7 @@
 import json
 import requests
 from nonebot import on_message
-from nonebot.adapters.onebot.v11 import Bot, Event, Message, PRIVATE
+from nonebot.adapters.onebot.v11 import Bot, Event
 
 
 

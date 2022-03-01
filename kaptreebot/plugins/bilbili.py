@@ -1,6 +1,8 @@
+import json
 import os
 from time import sleep
 
+import requests
 from selenium.webdriver.common.by import By
 from selenium import webdriver
 import nonebot
@@ -13,13 +15,16 @@ group_id_list=[719126877,913088980]
 scheduler = require('nonebot_plugin_apscheduler').scheduler
 def get_state():
     try:
-        driver = webdriver.Chrome(executable_path='C:\Program Files\Google\Chrome\Application\chromedriver.exe')  # 选择Chrome浏览器
-        driver.get('https://live.bilibili.com/22864638')  # 打开网站
-        driver.maximize_window()  # 最大化谷歌浏览器
-        html = driver.page_source
-        tt = driver.find_element(By.XPATH, '//*[@id="head-info-vm"]/div/div/div[1]/div[1]/div[1]').text
-        driver.close()
-        return str(tt)
+        url='https://api.iyk0.com/bilibili/user/?mid=486738984'
+        headers = {
+            'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.146 Safari/537.36'
+        }
+        val = requests.get(url, headers=headers)
+        res = json.loads(val.content)
+        if res['live_bf']=='直播中':
+            return '直播'
+        else:
+            return '未直播'
     except Exception as e:
         print('get_state_error',e)
 

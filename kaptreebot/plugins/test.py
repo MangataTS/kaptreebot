@@ -26,3 +26,21 @@
 #     print("%s ：截图失败！！！" % msg)
 # driver.close()
 #
+import json
+import requests
+
+
+def get_state():
+    try:
+        url='http://api.iyk0.com/bilibili/user/?mid=486738984'
+        val = requests.get(url)
+        res = json.loads(val.content)
+        if res['live_bf']=='直播中':
+            return ('直播')
+        else:
+            return ('未直播')
+    except Exception as e:
+        print('get_state_error',e)
+        return ('未直播')
+
+print(get_state())

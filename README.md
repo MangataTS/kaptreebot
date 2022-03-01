@@ -2,26 +2,25 @@
 
 ## 关于项目
 
-本项目基于[nonebot2]( https://v2.nonebot.dev/)框架，采用[go-cqhttp]( https://github.com/Mrs4s/go-cqhttp)协议，python3语言编写的
+本项目基于[nonebot2](https://v2.nonebot.dev/)框架，采用[go-cqhttp]( https://github.com/Mrs4s/go-cqhttp)协议，python3语言编写的
 
 ## 关于配置
 如果你是一个纯小白，那么请先下载[python3]( https://www.python.org/)，记得勾选环境变量的选项
 如果你已经配置好python环境，那么请安装nonebot2 -> 打开你的cmd，(需要注意的是这里装的环境是实体环境，如果你要做二次开发请在你的虚拟环境，IDE的终端继续安装下面的库)
 然后输入`pip install nb-cli`
 
-接着输入`pip install requests`
+然后输入`nb driver install aiohttp`和`nb driver install websockets`安装驱动器
 
-接着输入`pip install aiocqhttp`
+然后输入`nb adapter install nonebot-adapter-onebot` 安装适配器
 
-接着输入`pip install requests_html`
+接着输入`pip install requests requests_html Pillow ffmpeg lxml`
 
-接着输入`pip install nonebot.adapter.cqhttp`
+然后输入`nb plugin install nonebot_plugin_apscheduler`
 
-接着输入`pip install Pillow`
 后续就根具你的需求自己安装库啦
 
 ## 使用说明
-1.请先配置好go-cqhttp协议(只用修改我文件夹的config.hjson文件里面)，当然这个我这里配置好了的，你只需要更改QQ的UIN(账号)和password(密码)即可
+1.请先配置好go-cqhttp协议(只用修改我文件夹的config.yml文件里面)，当然这个我这里配置好了的，你只需要更改QQ的UIN(账号)和password(密码)即可(这里是机器人的账号和密码)
 &nbsp;
 
 2.在py编译器打开kaptreebot文件夹，然后运行bot.py文件
@@ -29,38 +28,54 @@
 &nbsp;
 如果没有py编译器的话，为了你运行方便，我写了个begin.bat，双击它也能运行(当然无论哪种方式你都要有py环境)
 
-3.在我的kaptreebot目录下面有两个文件.env.dev和.env.prod，请在里面修改成你的QQ号
+3.在我的kaptreebot目录下面有两个文件.env.dev和.env.prod，请在里面修改成你的QQ号（这里是权限账号）
 
 
 
 # 从0开始学习视频连接:
 
-[https://www.bilibili.com/video/BV1DP4y1W7ji](https://www.bilibili.com/video/BV1DP4y1W7ji)
+## 一、Nonebot+go-cq环境搭建
+
+[www.bilibili.com/video/BV1DP4y1W7ji](https://www.bilibili.com/video/BV1DP4y1W7ji)
+
+## 二、nonebot聊天bot的插件编写
+[www.bilibili.com/video/BV1dM4y157Zk](https://www.bilibili.com/video/BV1dM4y157Zk)
+
+## 三、nonebot2插件编写完结
+
+[www.bilibili.com/video/BV13h411B7eN](https://www.bilibili.com/video/BV13h411B7eN)
+
+## 四、Linux部署bot机器人
+
+[www.bilibili.com/video/BV1gQ4y1U7v9](https://www.bilibili.com/video/BV1gQ4y1U7v9)
 
 ![image-20210818144520047](image-20210818144520047.png)
 
 ## 目前实现功能
 |功能                   | 使用方法 |
 | ---- | ---- |
-|1.每日一句                        | eg:每日一句 |
+|1.B站直播第一时间发消息                        | eg:如果想修改成自己的直播间需要去bilbili.py 文件中修改|
 |2.天气查询                        | eg:天气 成都|
 |3.单词翻译                         | eg:翻译 我逢考必过 (目前已实现句子翻译) |
 |4.戳一戳                              | eg:手机戳我头像|
-|5.每日一图                             | eg:每日一图/setu/来一份色图/mc酱/R18|
+|5.每日一图                             | eg:每日一图/mc酱/R18|
 |6.我要抱抱                              |eg:我要抱抱/我要亲亲|
-|7.朋友圈文案/彩虹屁/开始网抑/毒鸡汤     | eg:“/开始网抑，/彩虹屁，/朋友圈文案，/毒鸡汤”|
+|7.朋友圈文案/彩虹屁/开始网抑    | eg:“/开始网抑，/彩虹屁，/朋友圈文案”|
 |8.情感语录 && 毒鸡汤                   | eg:情感语录/毒鸡汤/舔狗日记 (关键词匹配) |
 |9.智能回复                             | eg:你随便问什么都会有回复(在群里问的时候记得@她或者/她) |
-|10.语音回复                             | 通过你和她对话，可能会触发设置的语音(触发条件请参考语音调用.txt) |
+|10.语音回复                             | 通过你和她对话，可能会触发设置的语音(触发条件请参考 语音调用.txt) |
 |11.ph制图				|eg:ph 芜 湖 |
 |12.表情包搜索			|eg: 表情包 就这 |
 |13.王者荣耀出装搜索			|eg: 王者荣耀 李白 |
 |14.随机短视频播放		|eg: 短视频 |
 |15.抽签小游戏		|eg: 抽签 |
 |16.早报和节日推送		|每天自动推送到群里 |
-|17.狗屁不通文章生成		|eg: 狗屁不通文章生成 芜湖 |
-|18.运气王@出来		|红包领完后就会@运气王 |
-|19.To be continue……                    |还有一些彩蛋等你触发哦，eg:指令：绿茶，情话 |
+|17.运气王@出来		|红包领完后就会@运气王 |
+|18.DOJ用户查询|eg：DOJ kaptree 或者 find kaptree，参数数在DreamOJ上面的**用户名**|
+|19.各大OJ最近三场比赛|eg： 最近比赛|
+|20.分享关于最近一场Codeforces的比赛|eg：cf|
+|21.每日一题|每天自动发送到群聊中，当然也可以使用命令：`每日一题`|
+|22.To be continue……                    |还有一些彩蛋等你触发哦，eg:指令：绿茶，情话 |
 
 
 

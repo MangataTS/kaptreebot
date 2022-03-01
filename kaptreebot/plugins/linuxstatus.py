@@ -1,9 +1,8 @@
-from typing import Dict, List
+from typing import List
 import psutil
 from nonebot import on_command
 from nonebot.adapters.onebot.v11 import Bot, Event
 from nonebot.adapters.onebot.v11 import GROUP_ADMIN, GROUP_OWNER
-from nonebot.typing import T_State
 
 def cpu_status() -> float:
     return psutil.cpu_percent(interval=1)  # type: ignore

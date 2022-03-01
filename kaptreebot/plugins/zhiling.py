@@ -3,12 +3,10 @@ from requests_html import HTMLSession
 import requests
 from nonebot import on_command
 from nonebot import on_keyword
-from nonebot.rule import to_me
 from nonebot.adapters.onebot.v11 import Bot, Event
 import random
 from nonebot.adapters.onebot.v11 import MessageSegment
 import json
-from nonebot.typing import T_State
 
 kiss=['么么哒','不要这样嘛!','你好讨厌哦!','你好坏哦，欺负人家，哼！','不要酱紫嘛','一天没和你聊天，就觉得哪里不对劲！','快亲亲人家啦!!','不理你了，真讨厌。','人家不要了啦!','你今天有没有想念人家呀!',
       '别这样啦，人家是个女孩子嘛!','(✿◡‿◡)','(*/ω＼*)','つ﹏⊂','ヾ(≧O≦)〃嗷~','(>▽<)，好呀','恶心心','mu--a','可以教我写代码吗','记得AK比赛哦','能AK比赛吗？']
