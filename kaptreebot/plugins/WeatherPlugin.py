@@ -3,24 +3,31 @@ import gzip
 import json
 from nonebot import on_command
 from nonebot.rule import to_me
-from nonebot.adapters.cqhttp import Bot, Event
+
+from nonebot.matcher import Matcher
+from nonebot.adapters import Message
+from nonebot.params import Arg, CommandArg, ArgPlainText
 
 
+weather = on_command(cmd="天气",rule=to_me(), priority=2,block=True)
 
-weather = on_command("天气", priority=2)
+
 @weather.handle()
-async def handle_first_receive(bot: Bot, event: Event, state: dict):
-    if int(event.get_user_id()) != event.self_id:
-        args = str(event.message).strip()  # 首次发送命令时跟随的参数，例：/天气 上海，则args为上海
-        if args:
-            state["city"] = args  # 如果用户发送了参数则直接赋值
+async def handle_first_receive(matcher: Matcher, args: Message = CommandArg()):
+    plain_text = args.extract_plain_text()  # 首次发送命令时跟随的参数，例：/天气 上海，则args为上海
+    if plain_text:
+        matcher.set_arg("city", args)  # 如果用户发送了参数则直接赋值
 
 
-@weather.got("city", prompt="你想查询神马城市的天气(@_@)...")
-async def handle_city(bot: Bot, event: Event, state: dict):
-    city = state["city"]
-    city_weather = await get_weather(city)
-    await weather.finish(city_weather)
+@weather.got("city", prompt="你想查询哪个城市的天气呢？")
+async def handle_city(city: Message = Arg(), city_name: str = ArgPlainText("city")):
+    try:
+        city_weather = await get_weather(city_name)
+        await weather.send(city_weather)
+    except Exception as e:
+        await weather.send("天气查询插件出现故障，请联系Mangata")
+
+
 
 
 async def get_weather(city: str):

@@ -7,10 +7,9 @@ Created on Tue Apr 20 22:19:35 2021
 import os
 
 from PIL import Image, ImageFont, ImageDraw
-from aiocqhttp import MessageSegment
+from nonebot.adapters.onebot.v11 import MessageSegment
 from nonebot import on_command
-from nonebot.adapters.cqhttp import Bot, Event, Message
-
+from nonebot.adapters.onebot.v11 import Bot, Event, Message
 
 def spacing(check_str, font):
     # 用pil内置textsize函数获取字符串长度
@@ -61,30 +60,30 @@ def ph_generator(text1, text2):
     im.save('ph.png')
 
 
-ph = on_command("ph", priority=2)
-
-
+ph = on_command("ph", priority=2,block=True)
 @ph.handle()
-async def ph_(bot: Bot, event: Event, state: dict):
+async def ph_(bot: Bot, event: Event):
     if event.get_user_id != event.self_id:
-        print(str(event.message))
-        ch = str(event.message)
-        i = 0;
-        ss=[' '] * 2;
-        for it in ch.split(' '):
-            if i == 2:
-                break
-            ss[i] = it
-            i = i + 1
-        ph_generator(str(ss[0]),str(ss[1]))
-        path_ = os.getcwd()
-        path_ =  path_ +'\ph.png'
-        mypath = 'file:///' + path_
-        print(mypath)
-        sst = MessageSegment.image(file= str(mypath))#(file = str(mypath))
-        await bot.send(
-            event=event,
-            message=Message(sst)
-        )
+        try:
+            ch = str(event.message)
+            i = 0;
+            ss=[' '] * 2;
+            for it in ch.split(' '):
+                if i == 2:
+                    break
+                ss[i] = it
+                i = i + 1
+            ph_generator(str(ss[0]),str(ss[1]))
+            path_ = os.getcwd()
+            path_ =  path_ +'\ph.png'
+            mypath = 'file:///' + path_
+            print(mypath)
+            sst = MessageSegment.image(file=str(mypath))
+            await bot.send(
+                event=event,
+                message=Message(sst)
+            )
+        except Exception as e:
+            await bot.send(event=event,message="ph插件出现故障，请联系Mangata")
 
 

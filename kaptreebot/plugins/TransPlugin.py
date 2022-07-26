@@ -1,29 +1,32 @@
 from urllib import request,parse
 from nonebot import on_command
 from nonebot.rule import to_me
-from nonebot.adapters.cqhttp import Bot, Event
+from nonebot.adapters.onebot.v11 import Bot, Event
 import json
 import http.client
 import hashlib
 import urllib
 import random
 
+from nonebot.matcher import Matcher
+from nonebot.adapters import Message
+from nonebot.params import Arg, CommandArg, ArgPlainText
 
-trans = on_command("翻译", priority=2)
+trans = on_command("翻译", priority=2,block=True)
 @trans.handle()
-async def handle_first_receive(bot: Bot, event: Event, state: dict):
-    if int(event.get_user_id())!= event.self_id:
-        args = str(event.message).strip()  # 首次发送命令时跟随的参数
-        if args:
-            state["trans"] = args  # 如果用户发送了参数则直接赋值
+async def handle_first_receive(matcher: Matcher, args: Message = CommandArg()):
+    plain_text = args.extract_plain_text()  # 首次发送命令时跟随的参数，例：/天气 上海，则args为上海
+    if plain_text:
+        matcher.set_arg("Trans", args)  # 如果用户发送了参数则直接赋值
 
 
-@trans.got("trans", prompt="你想翻译什么呢...")
-async def handle_trans(bot: Bot, event: Event, state: dict):
-    text = state["trans"]
-    text_trans =  get_baidufanyi(text)
-    await trans.finish(text_trans)
-
+@trans.got("Trans", prompt="你想翻译什么呢...")
+async def handle_trans(Trans: Message = Arg(), text: str = ArgPlainText("Trans")):
+    try:
+        text_trans =  get_baidufanyi(text)
+        await trans.send(text_trans)
+    except Exception as e:
+        await trans.send("翻译插件出现故障，请联系Mangata")
 
 async def get_trans(trans: str):
     base_url = 'https://fanyi.baidu.com/sug'

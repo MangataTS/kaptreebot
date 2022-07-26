@@ -1,80 +1,46 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
+# #
 # import json
-# import requests
-# from requests_html import HTMLSession
-# url = 'https://api.iyk0.com/60s'
-# r = requests.get(url)
-# result = json.loads(r.content)
-# message = result['imageUrl']
-# print(message)
-
-# si_zhi_url = 'https://api.ownthink.com/bot'
-# appid = 'c8278e2921b4bc31f8974ad58dec13ba'
+# import random
+# import re
+# import urllib
+# from asyncio import Event
+# from urllib.request import urlopen
+# from time import sleep
 #
-# def get_n(text):
-#     try:
-#         data = {
-#             "spoken": text,
-#             "appid": appid,
-#             "userid": "HRPVyRSl"
-#         }
-#         r = requests.post(si_zhi_url, data)
-#         result = json.loads(r.content)
-#         message = result['data']['info']['text']
-#         print(message)
-#         return message
-#     except KeyError:
-#         print("error")
-#         return '这个问题好头疼呀，问点别的叭'
-# get_n("你喜欢什么")
-
-# def get_biao(text):
-#     url = ('https://api.iyk0.com/sbqb/?msg='+text)
-#     r = requests.get(url)
-#     result = json.loads(r.content)
-#     len = result['sum']
-#     print(len)
-#     message = result['data_img'][0]['img']
-#     print(message)
-#     return message
-# get_biao('好家伙')
-
-# def get_zaobao():
-#     url = 'https://api.iyk0.com/60s'
-#     r = requests.get(url)
-#     result = json.loads(r.content)
-#     message = result['imageUrl']
-#     return message
-# print(get_zaobao())
-# def get_yuying(text:str):
-#     url = ('https://api.iyk0.com/yy/?msg='+text)
-#     r = requests.get(url)
-#     message = r.text
-#     print(message)
-# get_yuying("好家伙")
-
-# url = 'https://api.iyk0.com/60s'
-# r = requests.get(url)
-# result = json.loads(r.content)
-# message = result['imageUrl']
-# print(message)
+# from selenium.webdriver.common.by import By
+# from selenium import webdriver
+# # import time
+# #
+#
+# driver = webdriver.Chrome()  # 选择Chrome浏览器
+# driver.get('https://live.bilibili.com/631')  # 打开网站
+# driver.maximize_window()  # 最大化谷歌浏览器
+# html = driver.page_source
+# tt = driver.find_element(By.XPATH, '//*[@id="head-info-vm"]/div/div/div[1]/div[1]/div[1]').text
+# print(tt)
+# sleep(1)
+# try:
+#     picture_url=driver.save_screenshot('.\\living.png')
+#     print("%s ：截图成功！！！" % picture_url)
+# except BaseException as msg:
+#     print("%s ：截图失败！！！" % msg)
+# driver.close()
+#
+import json
+import requests
 
 
-# from typing import Dict, List
-# import psutil
-# def cpu_status() -> float:
-#     return psutil.cpu_percent(interval=1)  # type: ignore
-#
-#
-# def per_cpu_status() -> List[float]:
-#     return psutil.cpu_percent(interval=1, percpu=True)  # type: ignore
-#
-#
-# def memory_status() -> float:
-#     return psutil.virtual_memory().percent
-#
-#
-#
-# print(cpu_status())
-# print(memory_status())
+def get_state():
+    try:
+        url='http://api.iyk0.com/bilibili/user/?mid=486738984'
+        val = requests.get(url)
+        res = json.loads(val.content)
+        if res['live_bf']=='直播中':
+            return ('直播')
+        else:
+            return ('未直播')
+    except Exception as e:
+        print('get_state_error',e)
+        return ('未直播')
+
+print(get_state())

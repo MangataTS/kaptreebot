@@ -1,0 +1,1 @@
+.\go-cqhttp.exe -faststart
